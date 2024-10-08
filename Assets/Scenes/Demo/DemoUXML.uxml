@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scenes/Demo/DemoUSS.uss?fileID=7433441132597879392&amp;guid=d5ef0d7fe4c142f83956ef382ea61609&amp;type=3#DemoUSS" />
+    <ui:VisualElement name="Background" class="full-screen background-image">
+        <ui:VisualElement name="MainMenu" class="menu-container glassmorphic">
+            <ui:Label text="Ethereal Quest" class="title" />
+            <ui:Button text="Start Journey" class="menu-button main-button" />
+            <ui:VisualElement class="button-group">
+                <ui:Button text="Chronicles" class="menu-button" />
+                <ui:Button text="Enchantments" class="menu-button" />
+                <ui:Button text="Exit Realm" class="menu-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
