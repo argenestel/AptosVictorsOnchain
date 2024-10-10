@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,6 +9,7 @@ using UnityEngine.UI;
 public class GameplayController : MonoBehaviour {
 
 	public static GameplayController instance;
+    public string ModuleAddress = "0x68abcea890b1d4594bc1e71a832c3ef0693f701335d59f1c4497e08e1190839a";
 
 	public float moveSpeed, distance_Factor = 1f;
 	private float distance_Move;
@@ -33,7 +36,6 @@ public class GameplayController : MonoBehaviour {
 
 	public Text final_Score_Text, best_Score_Text, final_Star_Score_Text;
 
-
 	public bool IsMenu;
 
 	void Awake () {
@@ -52,6 +54,10 @@ catch {
 
 		GetObstacles ();
 		StartCoroutine (Coroutine_Name);
+		
+	}
+	void OnEnable() {
+		// wallet = new Wallet(PlayerPrefs.GetString("MnemonicsKey"));
 
 	}
 
@@ -92,21 +98,23 @@ catch {
 
 	}
 
-	void UpdateDistance() {
-		distance_Move += Time.deltaTime * distance_Factor;
-		float round = Mathf.Round (distance_Move);
+void UpdateDistance() {
+    distance_Move += Time.deltaTime * distance_Factor;
+    float round = Mathf.Round(distance_Move);
 
-		// COUNT AND SHOW THE SCORE
-		score_Count = (int)round; // save the score when the player dies
-		score_Text.text = round.ToString ();
+    // COUNT AND SHOW THE SCORE
+    score_Count = (int)round;
+    score_Text.text = round.ToString();
 
-		if (round >= 30.0f && round < 60.0f) {
-			moveSpeed = 14f;
+    // Create the transaction payload
 
-		} else if (round >= 60f) {
-			moveSpeed = 16f;
-		}
-	}
+    // Rest of your existing code...
+    if (round >= 30.0f && round < 60.0f) {
+        moveSpeed = 14f;
+    } else if (round >= 60f) {
+        moveSpeed = 16f;
+    }
+}
 
 	void GetObstacles() {
 		obstacle_List = new GameObject[obstacles_Obj.transform.childCount];
@@ -148,9 +156,14 @@ catch {
 		}
 	}
 
-	public void UpdateStarScore() {
+	public async void UpdateStarScore() {
 		star_Score_Count++;
 		star_Score_Text.text = star_Score_Count.ToString ();
+
+		await WalletManager.Instance.CollectStar();
+
+
+
 	}
 
 	public void PauseGame() {
@@ -159,13 +172,16 @@ catch {
 		pause_Anim.Play ("SlideIn");
 	}
 
-	public void ResumeGame() {
+	public  void ResumeGame() {
 		pause_Anim.Play ("SlideOut");
+
 	}
 
-	public void RestartGame() {
+	public async void RestartGame() {
 		Time.timeScale = 1f;
 		SceneManager.LoadScene ("Gameplay");
+						await WalletManager.Instance.EndGame();
+						await WalletManager.Instance.StartGame();
 	}
 
 	public void HomeButton() {
@@ -173,7 +189,7 @@ catch {
 		SceneManager.LoadScene ("MainMenu");
 	}
 
-	public void GameOver() {
+	public async void GameOver() {
 		Time.timeScale = 0f;
 		gameOver_Panel.SetActive (true);
 		gameOver_Anim.Play ("SlideIn");
@@ -187,6 +203,8 @@ catch {
 
 		best_Score_Text.text = GameManager.instance.score_Count.ToString ();
 
+		await WalletManager.Instance.UpdateScore(ulong.Parse(score_Count.ToString()));
+		await WalletManager.Instance.EndGame();
 		GameManager.instance.starScore += star_Score_Count;
 
 		GameManager.instance.SaveGameData ();

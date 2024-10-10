@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+
 public class MainMenuController : MonoBehaviour {
 
 	public GameObject hero_Menu;
@@ -11,9 +12,20 @@ public class MainMenuController : MonoBehaviour {
 
 	public Image music_Img;
 	public Sprite music_Off, music_On;
+	public string ModuleAddress = "0x68abcea890b1d4594bc1e71a832c3ef0693f701335d59f1c4497e08e1190839a";
 
-	public void PlayGame() {
+	
+	public async void PlayGame() {
+    bool isInitialized = await WalletManager.Instance.IsInitialized();
+
+	if(!isInitialized){
+		await WalletManager.Instance.InitializeGame();
+	}
+		await WalletManager.Instance.StartGame();
+
 		SceneManager.LoadScene ("Gameplay");
+
+			
 	}
 
 	public void HeroMenu() {

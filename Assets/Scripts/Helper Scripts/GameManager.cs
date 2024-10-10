@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 
 public class GameManager : MonoBehaviour {
 
@@ -41,8 +42,9 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void InitializeGameData() {
-		LoadGameData ();
+	async void  InitializeGameData() {
+		// WalletManager.Instance.GenerateAccount();
+		// await LoadGameDataFromBlockchain ();
 
 		if (gameData == null) {
 			// we are running our game for the first time
@@ -103,6 +105,35 @@ public class GameManager : MonoBehaviour {
 		}
 
 	}
+
+
+	 async Task LoadGameDataFromBlockchain() {
+        try {
+            ulong blockchainScore = await WalletManager.Instance.GetScore();
+            ulong blockchainStarScore = await WalletManager.Instance.GetStarScore();
+            ulong blockchainBestScore = await WalletManager.Instance.GetBestScore();
+
+            score_Count = (int)blockchainScore;
+            starScore = (int)blockchainStarScore;
+            // Update other fields as necessary
+
+            gameData = new GameData();
+            gameData.StarScore = starScore;
+            gameData.ScoreCount = score_Count;
+            // Set other fields in gameData
+
+            LoadGameData(); // Load local data as a backup or for additional info not stored on blockchain
+
+            // Merge blockchain and local data if necessary
+            // For example, take the higher score between blockchain and local storage
+           
+
+        } catch (Exception e) {
+            Debug.LogError($"Failed to load game data from blockchain: {e.Message}");
+            LoadGameData(); // Fallback to local data if blockchain load fails
+        }
+    }
+
 
 	void LoadGameData() {
 

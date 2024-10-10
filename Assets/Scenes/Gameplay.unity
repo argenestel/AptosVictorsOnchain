@@ -4096,6 +4096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7f4124e3d4744d28ee74825093939c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ModuleAddress: 0x68abcea890b1d4594bc1e71a832c3ef0693f701335d59f1c4497e08e1190839a
   moveSpeed: 0
   distance_Factor: 1
   obstacles_Obj: {fileID: 92288071}
@@ -4108,6 +4109,7 @@ MonoBehaviour:
   final_Score_Text: {fileID: 2117239298}
   best_Score_Text: {fileID: 1127241753}
   final_Star_Score_Text: {fileID: 458503241}
+  IsMenu: 0
 --- !u!4 &851169754
 Transform:
   m_ObjectHideFlags: 0
