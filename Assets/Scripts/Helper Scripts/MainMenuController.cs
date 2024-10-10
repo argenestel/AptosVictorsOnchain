@@ -12,7 +12,7 @@ public class MainMenuController : MonoBehaviour {
 
 	public Image music_Img;
 	public Sprite music_Off, music_On;
-	public string ModuleAddress = "0x68abcea890b1d4594bc1e71a832c3ef0693f701335d59f1c4497e08e1190839a";
+	public string ModuleAddress = "0xd36ee9d2883da4b1eb018b1f6d7eab57588e5e273c49c919927a8c54b4c647b9";
 
 	
 	public async void PlayGame() {
