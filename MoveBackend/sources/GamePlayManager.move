@@ -10,7 +10,8 @@ module aptosvictors::gameplaymanager {
         best_score: u64,
         last_update: u64,
         game_active: bool,
-    }
+        total_stars: u64,
+}
 
     // Events
     #[event]
@@ -42,6 +43,7 @@ module aptosvictors::gameplaymanager {
             best_score: 0,
             last_update: timestamp::now_seconds(),
             game_active: false,
+            total_stars: 0,
         });
     }
 
@@ -55,6 +57,7 @@ module aptosvictors::gameplaymanager {
         game_state.score = 0;
         game_state.star_score = 0;
         game_state.last_update = timestamp::now_seconds();
+    
     }
 
     // Update the player's score
@@ -84,7 +87,6 @@ module aptosvictors::gameplaymanager {
         assert!(game_state.game_active, 3); // Error code 3: Game not active
         
         game_state.star_score = game_state.star_score + 1;
-        
         // Emit star collected event
         event::emit(StarCollectedEvent {
             player: player_addr,
@@ -96,7 +98,7 @@ module aptosvictors::gameplaymanager {
     public entry fun end_game(account: &signer) acquires GameState {
         let player_addr = signer::address_of(account);
         let game_state = borrow_global_mut<GameState>(player_addr);
-        
+        game_state.total_stars = game_state.total_stars + game_state.star_score;
         game_state.game_active = false;
     }
 
@@ -104,15 +106,15 @@ module aptosvictors::gameplaymanager {
         let player_addr = signer::address_of(account);
         let game_state = borrow_global_mut<GameState>(player_addr);
         
-        assert!(game_state.star_score >= item_cost, 4); // Error code 4: Insufficient stars
+        assert!(game_state.total_stars >= item_cost, 4); // Error code 4: Insufficient stars
         
-        game_state.star_score = game_state.star_score - item_cost;
+        game_state.total_stars = game_state.total_stars - item_cost;
         
         // Emit purchase made event
         event::emit(PurchaseMadeEvent {
             player: player_addr,
             item_cost,
-            new_star_count: game_state.star_score,
+            new_star_count: game_state.total_stars,
         });
     }
 
