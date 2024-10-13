@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Threading.Tasks;
 using System;
 using Aptos.Exceptions;
+using System.Collections;
+using UnityEngine.Networking;
 
 public class WalletManager : MonoBehaviour
 {
@@ -65,8 +67,36 @@ public class WalletManager : MonoBehaviour
 
     public async Task FundAccount()
     {
-        await client.FundAccount(account.Address, 100_000_000);
+        StartCoroutine(RequestAptosTokens(account.Address.ToString(), 10000000));  
     }
+
+   private const string DEVNET_FAUCET_URL = "https://faucet.devnet.aptoslabs.com/mint";
+
+    [Obsolete]
+    public IEnumerator RequestAptosTokens(string address, uint amount)
+    {
+        string url = $"{DEVNET_FAUCET_URL}?amount={amount}&address={address}";
+
+        using (UnityWebRequest www = UnityWebRequest.Post(url, ""))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError($"Error: {www.error}");
+                Debug.LogError($"Response: {www.downloadHandler.text}");
+            }
+            else
+            {
+                Debug.Log("Faucet request successful!");
+                Debug.Log($"Response: {www.downloadHandler.text}");
+
+                // The response is expected to be a JSON array of transaction hashes
+                // You may want to parse this depending on your needs
+            }
+        }
+    }
+
 
 public async Task<bool> IsInitialized()
 {

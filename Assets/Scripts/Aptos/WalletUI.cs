@@ -38,13 +38,13 @@ public class WalletUI : MonoBehaviour {
         });
 
 
-        if(!PlayerPrefs.HasKey("serialized-ed25519-private-key")){
-            WalletModal.SetActive(true);
-            AddressText.text = WalletManager.Instance.GetAddress();
-        }
-        else {
-            WalletModal.SetActive(false);
-        }
+        // if(!PlayerPrefs.HasKey("serialized-ed25519-private-key")){
+        //     WalletModal.SetActive(true);
+        //     AddressText.text = WalletManager.Instance.GetAddress();
+        // }
+        // else {
+        //     WalletModal.SetActive(false);
+        // }
 
     }
 }
