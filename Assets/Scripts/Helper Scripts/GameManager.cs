@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	async void  InitializeGameData() {
+	void  InitializeGameData() {
 		// WalletManager.Instance.GenerateAccount();
 		// await LoadGameDataFromBlockchain ();
 
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour {
 			}
 
 		} catch(Exception e) {
-			
+			Debug.Log(e);
 		} finally {
 			if (file != null) {
 				file.Close ();
@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour {
 			}
 
 		} catch(Exception e) {
-			
+			Debug.LogError(e);
 		} finally {
 			if (file != null) {
 				file.Close ();
