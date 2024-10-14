@@ -13,6 +13,7 @@ public class WalletUI : MonoBehaviour
     public GameObject WalletModal;
 
     public TMP_Text AddressText;
+    
     public TMP_Text PrivateKeyText;
     public TMP_Text BalanceApt;
 
