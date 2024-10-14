@@ -1,84 +1,104 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
+
+public class MainMenuController : MonoBehaviour
+{
+    public GameObject hero_Menu;
+    public Text starScoreText;
+
+    public Image music_Img;
+    public Sprite music_Off, music_On;
+
+    public void Start()
+    {
+        StartCoroutine(InitializeWallet());
+    }
 
 
-public class MainMenuController : MonoBehaviour {
+    public void OnEnable(){
+        WalletManager.Instance.OnGetBalance += OnGetBalance;
+    }
 
-	public GameObject hero_Menu;
-	public Text starScoreText;
+    private void OnGetBalance(float obj)
+    {
+        if(obj < 0.1f){
+            StartCoroutine(WalletManager.Instance.FundAccount(10000000)); // 1 APT
 
-	public Image music_Img;
-	public Sprite music_Off, music_On;
-	public string ModuleAddress = "0xd36ee9d2883da4b1eb018b1f6d7eab57588e5e273c49c919927a8c54b4c647b9";
+        }
+    }
 
-	
-	public async void PlayGame() {
-    bool isInitialized = await WalletManager.Instance.IsInitialized();
+    private IEnumerator InitializeWallet()
+    {
+        // Initialize wallet
+        WalletManager.Instance.InitWalletFromCache();
 
-	if(!isInitialized){
-		await WalletManager.Instance.InitializeGame();
-	}
-		await WalletManager.Instance.StartGame();
+        if (string.IsNullOrEmpty(WalletManager.Instance.GetCurrentWalletAddress()))
+        {
+            WalletManager.Instance.GenerateAccount();
+        }
 
-		SceneManager.LoadScene ("Gameplay");
-
-			
-	}
-
-	public void HeroMenu() {
-		hero_Menu.SetActive (true);
-		starScoreText.text = "" + GameManager.instance.starScore;
-	}
-
-	public void HomeButton() {
-		hero_Menu.SetActive (false);
-	}
-
-	public void MusicButton() {
-		if (GameManager.instance.playSound) {
-			music_Img.sprite = music_Off;
-			GameManager.instance.playSound = false;
-		} else {
-			music_Img.sprite = music_On;
-			GameManager.instance.playSound = true;
-		}
-	}
-
-} // class
+        // Fund the account if needed
+        WalletManager.Instance.LoadCurrentWalletBalance();
 
 
+        // Update UI with star score
+        yield return StartCoroutine(WalletManager.Instance.GetStarScore((score) =>
+        {
+            GameManager.instance.starScore = (int)score;
+            UpdateStarScoreUI();
+        }));
+    }
 
+    public void PlayGame()
+    {
+        StartCoroutine(StartGameCoroutine());
+    }
 
+    private IEnumerator StartGameCoroutine()
+    {
+        bool isInitialized = false;
+        yield return StartCoroutine(WalletManager.Instance.IsInitialized((initialized) => isInitialized = initialized));
 
+        if (!isInitialized)
+        {
+            yield return StartCoroutine(WalletManager.Instance.InitializeGame());
+        }
 
+        yield return StartCoroutine(WalletManager.Instance.StartGame());
 
+        SceneManager.LoadScene("Gameplay");
+    }
 
+    public void HeroMenu()
+    {
+        hero_Menu.SetActive(true);
+        UpdateStarScoreUI();
+    }
 
+    public void HomeButton()
+    {
+        hero_Menu.SetActive(false);
+    }
 
+    public void MusicButton()
+    {
+        if (GameManager.instance.playSound)
+        {
+            music_Img.sprite = music_Off;
+            GameManager.instance.playSound = false;
+        }
+        else
+        {
+            music_Img.sprite = music_On;
+            GameManager.instance.playSound = true;
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private void UpdateStarScoreUI()
+    {
+        starScoreText.text = GameManager.instance.starScore.ToString();
+    }
+}

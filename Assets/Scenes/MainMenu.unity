@@ -1749,6 +1749,8 @@ GameObject:
   m_Component:
   - component: {fileID: 263553158}
   - component: {fileID: 263553157}
+  - component: {fileID: 263553160}
+  - component: {fileID: 263553159}
   m_Layer: 0
   m_Name: WalletManager
   m_TagString: Untagged
@@ -1768,6 +1770,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 328fda94b9ced78c587bdc7bacf74e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  accountNumLimit: 10
+  addressList: []
 --- !u!4 &263553158
 Transform:
   m_ObjectHideFlags: 0
@@ -1783,6 +1787,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &263553159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263553156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 750e87c108307454fa0f2476c1eaf5e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &263553160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263553156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe4224f48c1a754390064558e8ae140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &263720837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2806,8 +2834,8 @@ MonoBehaviour:
   GetAirdrop: {fileID: 817153720}
   WalletModal: {fileID: 602514911}
   AddressText: {fileID: 2100516278}
-  privateKey: {fileID: 1826614303}
-  BalanceApt: {fileID: 0}
+  PrivateKeyText: {fileID: 1826614303}
+  BalanceApt: {fileID: 1628488256}
 --- !u!4 &384132356
 Transform:
   m_ObjectHideFlags: 0
@@ -10299,7 +10327,6 @@ MonoBehaviour:
   music_Img: {fileID: 567128336}
   music_Off: {fileID: 21300000, guid: c33642f356fc1e448a6fc944c12ecf8d, type: 3}
   music_On: {fileID: 21300000, guid: a42fc888cbcf54b4eb53b60bc343a1ba, type: 3}
-  ModuleAddress: 0x68abcea890b1d4594bc1e71a832c3ef0693f701335d59f1c4497e08e1190839a
 --- !u!4 &1404389538
 Transform:
   m_ObjectHideFlags: 0

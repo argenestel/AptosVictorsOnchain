@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "com.aptoslabs.aptos-unity-sdk": {
-      "version": "https://github.com/aptos-labs/unity-sdk.git?path=/Packages/com.aptoslabs.aptos-unity-sdk",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "6a4c55163dff219a834c4f3ea685b71228a059fc"
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -65,6 +58,13 @@
     },
     "com.unity.ide.vscode": {
       "version": "1.2.5",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {},

@@ -160,7 +160,7 @@ void UpdateDistance() {
 		star_Score_Count++;
 		star_Score_Text.text = star_Score_Count.ToString ();
 
-		await WalletManager.Instance.CollectStar();
+		StartCoroutine(WalletManager.Instance.CollectStar());
 
 
 
@@ -180,8 +180,8 @@ void UpdateDistance() {
 	public async void RestartGame() {
 		Time.timeScale = 1f;
 		SceneManager.LoadScene ("Gameplay");
-						await WalletManager.Instance.EndGame();
-						await WalletManager.Instance.StartGame();
+						StartCoroutine(WalletManager.Instance.EndGame());
+						StartCoroutine(WalletManager.Instance.StartGame());
 	}
 
 	public void HomeButton() {
@@ -203,8 +203,8 @@ void UpdateDistance() {
 
 		best_Score_Text.text = GameManager.instance.score_Count.ToString ();
 
-		await WalletManager.Instance.UpdateScore(ulong.Parse(score_Count.ToString()));
-		await WalletManager.Instance.EndGame();
+		StartCoroutine(WalletManager.Instance.UpdateScore(ulong.Parse(score_Count.ToString())));
+		StartCoroutine(WalletManager.Instance.EndGame());
 		GameManager.instance.starScore += star_Score_Count;
 
 		GameManager.instance.SaveGameData ();
